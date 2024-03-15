@@ -7,7 +7,7 @@ public class MainPerson {
         Person personTree = new Person("Bob", "Bob", 21);
         Person personFour = new Person("John", "John", 25);
 
-        ArrayList<Person> people = new ArrayList<Person>();
+        ArrayList<Person> people = new ArrayList<>();
         people.add(personOne);
         people.add(personTwo);
         people.add(personTree);
