@@ -4,7 +4,7 @@ import Task01.config.ProjectConfig;
 import Task01.domain.Car;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-public class Main {
+public class MainOne {
     public static void main(String[] args) {
         var context = new AnnotationConfigApplicationContext(ProjectConfig.class);
 
