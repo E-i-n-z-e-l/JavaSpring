@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -39,7 +40,6 @@ public class UserController {
 
         model.addAttribute("users", users);
         return "user-list";
-        //return "home.html";
     }
 
     /**
@@ -81,6 +81,45 @@ public class UserController {
     @GetMapping("user-delete/{id}")
     public String deleteUser(@PathVariable("id") int id) {
         userService.deleteById(id);
+        return "redirect:/users";
+    }
+
+    /**
+     * updateUserForm() - это GET-метод, который обрабатывает запрос на путь "/user-update/{id}".
+     * <p></p>
+     * Он принимает значение идентификатора пользователя из пути и модель Model в качестве параметров.
+     * <p></p>
+     * Метод userService.findById(id) вызывает метод findById(id) из userService для получения объекта User по
+     * его идентификатору. Затем метод добавляет этот объект User в модель с помощью model.addAttribute(),
+     * чтобы он был доступен при отображении представления. Наконец, метод возвращает имя представления "user-update",
+     * которое содержит форму для обновления данных пользователя.
+     * @param id
+     * @param model
+     * @return
+     */
+    @GetMapping("/user-update/{id}")
+    public String updateUserForm(@PathVariable("id") int id, Model model) {
+        User user = userService.findById(id);
+        model.addAttribute("user", user);
+        return "user-update";
+    }
+
+    /**
+     * updateUser() - это POST-метод, который обрабатывает запрос на путь "/user-update".
+     * <p></p>
+     * Он принимает объект User из формы с помощью аннотации @ModelAttribute.
+     * <p></p>
+     * Метод userService.updateUser(user) вызывает метод updateUser(user) из userService, чтобы обновить
+     * данные пользователя в базе данных.
+     * <p></p>
+     * После успешного обновления данных, метод выполняет перенаправление на путь "/users" с помощью "redirect:/users".
+     * Перенаправление позволяет отобразить список пользователей после обновления данных.
+     * @param user
+     * @return
+     */
+    @PostMapping("/user-update")
+    public String updateUser(@ModelAttribute("user") User user) {
+        userService.updateUser(user);
         return "redirect:/users";
     }
 }

@@ -63,4 +63,41 @@ public class UserRepository {
         String sql = "DELETE FROM userTable WHERE id = ?";
         jdbc.update(sql, id);
     }
+
+    /**
+     * updateUser(User user) - это метод, который выполняет SQL-запрос для обновления
+     * данных пользователя в базе данных.
+     * <p></p>
+     * Используем SQL-запрос с параметрами (?) и метод jdbc.update(), чтобы выполнить обновление. Передаем значения
+     * из объекта User (имя, фамилия, идентификатор) в качестве параметров.
+     * @param user
+     */
+    public void updateUser(User user) {
+        String sql = "UPDATE userTable SET firstName = ?, lastName = ? WHERE id = ?";
+        jdbc.update(sql, user.getFirstName(), user.getLastName(), user.getId());
+    }
+
+    /**
+     * findById(int id) - это метод, который выполняет SQL-запрос для выборки пользователя по его идентификатору.
+     * <p></p>
+     * Используем SQL-запрос с параметром (?) и метод jdbc.queryForObject().
+     * <p></p>
+     * Определяем объект RowMapper<User>, который преобразует(маппит) результаты запроса на объект User.
+     * <p></p>
+     * Этот метод возвращает объект User с заполненными значениями из результата запроса.
+     * @param id
+     * @return
+     */
+    public User findById(int id) {
+        String sql = "SELECT * FROM userTable WHERE id = ?";
+        RowMapper<User> userRowMapper = (rs, rowNum) -> {
+            User user = new User();
+            user.setId(rs.getInt("id"));
+            user.setFirstName(rs.getString("firstName"));
+            user.setLastName(rs.getString("lastName"));
+            return user;
+        };
+
+        return jdbc.queryForObject(sql, userRowMapper, id);
+    }
 }
